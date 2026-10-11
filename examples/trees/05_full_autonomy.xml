@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Cold start to goal: bring the stack up, localize, then drive with recovery.
+
+      bteng-nav2 run examples/trees/05_full_autonomy.xml \
+                 -p examples/config/nav2_params.yaml
+
+  A cold start needs more than the default 60 s, so raise the per-tree timeout
+  (the "timeout" flag) to about 180.
+
+  command="0" is ManageLifecycleNodes STARTUP (see bteng_nav2.services.lifecycle
+  for the constants).  Timeout msec="120000" bounds the driving phase itself, on
+  top of the per-tree timeout that bounds the whole run.
+-->
+<BTEng format_version="1.0" main_tree_to_execute="main">
+  <Tree ID="main">
+    <Sequence name="bringup_and_go">
+
+      <ManageLifecycleNodes name="startup"
+                            command="0"
+                            success="{lifecycle_ok}" />
+
+      <SetInitialPose name="localize" initial_pose="{initial_pose}" />
+
+      <Timeout name="drive_budget" msec="120000">
+        <Fallback name="navigate_with_recovery">
+
+          <NavigateToPose name="attempt"
+                          goal_pose="{goal_pose}"
+                          result="{nav_result}" />
+
+          <Sequence name="recover_and_retry">
+            <ClearGlobalCostmap name="clear_global" />
+            <BackUp name="back_off" backup_dist="{backup_dist}" />
+            <NavigateToPose name="retry"
+                            goal_pose="{goal_pose}"
+                            result="{retry_result}" />
+          </Sequence>
+
+        </Fallback>
+      </Timeout>
+
+    </Sequence>
+  </Tree>
+</BTEng>

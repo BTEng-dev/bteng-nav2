@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  The simplest possible tree: one goal, sent to the Nav2 stack.
+
+      bteng-nav2 run examples/trees/01_navigate_to_pose.xml \
+                 -p examples/config/nav2_params.yaml
+
+  goal_pose="{goal_pose}" reads the PoseStamped that the params file built.
+  result="{nav_result}" writes the action result back to the blackboard.
+-->
+<BTEng format_version="1.0" main_tree_to_execute="main">
+  <Tree ID="main">
+    <NavigateToPose name="go_to_kitchen"
+                    goal_pose="{goal_pose}"
+                    result="{nav_result}" />
+  </Tree>
+</BTEng>

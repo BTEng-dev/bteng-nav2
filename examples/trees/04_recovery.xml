@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Navigate, and if that fails, recover and try once more.
+
+      bteng-nav2 run examples/trees/04_recovery.xml \
+                 -p examples/config/nav2_params.yaml
+
+  Fallback returns SUCCESS as soon as a child succeeds, so the recovery branch
+  is never touched on a clean run.  Retry wraps the second attempt: two goes at
+  the goal after the costmap has been cleared and the robot has backed off.
+-->
+<BTEng format_version="1.0" main_tree_to_execute="main">
+  <Tree ID="main">
+    <Fallback name="navigate_with_recovery">
+
+      <NavigateToPose name="attempt"
+                      goal_pose="{goal_pose}"
+                      result="{nav_result}" />
+
+      <Sequence name="recover_and_retry">
+        <ClearGlobalCostmap name="clear_global" />
+        <ClearLocalCostmap  name="clear_local" />
+        <BackUp name="back_off"
+                backup_dist="{backup_dist}"
+                backup_speed="{backup_speed}" />
+        <Spin name="look_around" target_yaw="{target_yaw}" />
+
+        <Retry name="retry_twice" num_attempts="2">
+          <NavigateToPose name="retry"
+                          goal_pose="{goal_pose}"
+                          result="{retry_result}" />
+        </Retry>
+      </Sequence>
+
+    </Fallback>
+  </Tree>
+</BTEng>

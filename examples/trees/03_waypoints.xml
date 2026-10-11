@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Patrol a route, with a battery guard in front of it.
+
+      bteng-nav2 run examples/trees/03_waypoints.xml \
+                 -p examples/config/nav2_params.yaml
+
+  ReactiveSequence re-checks its conditions on every tick, so the battery
+  condition keeps being evaluated while the robot drives — a plain Sequence
+  would check it once and then stop looking.  Inverter turns "battery is low"
+  into the guard "battery is not low".
+-->
+<BTEng format_version="1.0" main_tree_to_execute="main">
+  <Tree ID="main">
+    <ReactiveSequence name="patrol_while_charged">
+
+      <Inverter name="not_low">
+        <IsBatteryLow name="battery_check" low_threshold="{low_threshold}" />
+      </Inverter>
+
+      <NavigateThroughPoses name="patrol"
+                            poses="{waypoints}"
+                            result="{patrol_result}" />
+
+    </ReactiveSequence>
+  </Tree>
+</BTEng>

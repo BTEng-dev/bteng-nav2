@@ -1,0 +1,97 @@
+site_name: bteng-nav2
+site_description: Nav2 behavior tree nodes for the BTEng engine
+repo_url: https://github.com/mdirzpr/BTEng_nav2
+repo_name: mdirzpr/BTEng_nav2
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - content.code.annotate
+    - toc.follow
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_source: true
+            show_bases: true
+            show_signature_annotations: true
+            separate_signature: true
+            line_length: 60
+            merge_init_into_class: true
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            members_order: source
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Changelog: changelog.md
+  - Getting Started:
+    - Installation: getting-started/install.md
+    - Quick Start: getting-started/quickstart.md
+  - User Guide:
+    - Running from the CLI: guide/cli.md
+    - Retargeting Endpoints: guide/endpoints.md
+    - Action Nodes: guide/actions.md
+    - Service Nodes: guide/services.md
+    - Condition Nodes: guide/conditions.md
+    - Publisher Nodes: guide/publishers.md
+    - Building Trees: guide/building-trees.md
+    - Testing Without ROS: guide/testing.md
+  - Examples:
+    - Navigate to Pose: examples/navigate-to-pose.md
+    - Compute & Follow: examples/compute-and-follow.md
+    - Patrol Loop: examples/patrol-loop.md
+    - Recovery Tree: examples/recovery-tree.md
+    - Full Autonomy: examples/full-autonomy.md
+  - API Reference:
+    - Actions: reference/actions.md
+    - Services: reference/services.md
+    - Conditions: reference/conditions.md
+    - Publishers: reference/publishers.md

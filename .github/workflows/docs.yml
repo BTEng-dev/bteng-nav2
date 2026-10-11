@@ -1,0 +1,46 @@
+name: Docs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "bteng_nav2/**"
+      - "requirements-docs.txt"
+
+jobs:
+  deploy-docs:
+    name: Build and deploy docs
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install docs dependencies
+        run: pip install -r requirements-docs.txt
+
+      - name: Install bteng-ros2 (and bteng)
+        run: pip install bteng-ros2
+
+      - name: Install package
+        run: pip install -e .
+
+      - name: Build docs (strict)
+        run: mkdocs build --strict
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site

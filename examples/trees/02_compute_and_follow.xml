@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Plan, then execute — the two halves of navigation as separate nodes.
+
+      bteng-nav2 run examples/trees/02_compute_and_follow.xml \
+                 -p examples/config/nav2_params.yaml
+
+  ComputePathToPose writes the planned path to blackboard["path"]; FollowPath
+  reads the same key.  That shared key IS the wiring: there is no other link
+  between the two nodes.  Nothing here declares `path` as an output port —
+  bteng_nav2 seeds the parser's port directions from each node's own
+  provided_ports(), so a `{key}` attribute binds the way the node declared it.
+-->
+<BTEng format_version="1.0" main_tree_to_execute="main">
+  <Tree ID="main">
+    <Sequence name="plan_then_drive">
+
+      <ComputePathToPose name="plan"
+                         goal="{goal}"
+                         path="{path}" />
+
+      <FollowPath name="drive"
+                  path="{path}"
+                  controller_id="FollowPath" />
+
+    </Sequence>
+  </Tree>
+</BTEng>

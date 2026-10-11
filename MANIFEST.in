@@ -1,0 +1,12 @@
+include LICENSE
+include README.md
+
+recursive-include bteng_nav2 *.py
+
+# The README quickstart and test_runtime's dry-run gate both read these.
+recursive-include examples *.xml *.yaml
+
+exclude CLAUDE.md
+recursive-exclude test *
+recursive-exclude docs *
+recursive-exclude .github *

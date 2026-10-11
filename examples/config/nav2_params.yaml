@@ -1,0 +1,59 @@
+# Params for the example trees.
+#
+#   bteng-nav2 run examples/trees/ -p examples/config/nav2_params.yaml --dry-run
+#   bteng-nav2 run examples/trees/01_navigate_to_pose.xml -p examples/config/nav2_params.yaml
+#
+# Poses are built here, not in the XML: a BT XML attribute is a string, and
+# NavigateToPose wants a geometry_msgs/PoseStamped.  Everything under
+# `blackboard:` is seeded before each tree runs, so the trees only reference
+# keys — `goal_pose="{goal_pose}"`.
+#
+# header.stamp is left at zero; Nav2 reads a zero stamp as "now".
+
+ros:
+  # Absolute action/service names are rewritten with this prefix, so the same
+  # trees drive robot1 and robot2.  Leave empty for a single-robot setup.
+  namespace: ""
+  node_name: bteng_nav2
+  use_sim_time: false
+
+blackboard:
+  # ── Goals ────────────────────────────────────────────────────────────────
+  goal_pose:
+    type: pose
+    frame_id: map
+    x: 2.0
+    y: 1.5
+    yaw: 0.0
+
+  # ComputePathToPose takes its target on the `goal` port.
+  goal:
+    type: pose
+    frame_id: map
+    x: 3.0
+    y: -1.0
+    yaw: 1.57
+
+  # NavigateThroughPoses takes a list.  [x, y] or [x, y, yaw].
+  waypoints:
+    type: poses
+    frame_id: map
+    points:
+      - [1.0, 1.0]
+      - [2.0, 1.0, 1.57]
+      - [2.0, -1.0, 3.14]
+      - [0.0, 0.0, 0.0]
+
+  # ── Localization ─────────────────────────────────────────────────────────
+  initial_pose:
+    type: pose_cov
+    frame_id: map
+    x: 0.0
+    y: 0.0
+    yaw: 0.0
+
+  # ── Recovery tuning ──────────────────────────────────────────────────────
+  backup_dist: 0.30
+  backup_speed: 0.025
+  target_yaw: 1.57
+  low_threshold: 0.20

@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bteng-nav2"
+version = "0.2.0"
+description = "Nav2 behavior tree nodes for the BTEng engine"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.12"
+dependencies = [
+    "bteng>=0.3.2",        # first release requiring Python 3.12; behaviour floor is 0.3.1
+    "bteng-ros2>=0.3.0",   # likewise; behaviour floor is 0.2.3 (endpoint ports)
+    "pyyaml>=5.4",
+]
+authors = [
+  { name = "BTEng contributors", email = "mdirzpr@gmail.com" }
+]
+keywords = ["behavior-tree", "robotics", "ros2", "nav2", "navigation", "automation"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.scripts]
+bteng-nav2 = "bteng_nav2.cli:main"
+
+[project.urls]
+Homepage      = "https://github.com/BTEng-dev/bteng-nav2"
+Documentation = "https://github.com/BTEng-dev/bteng-nav2/tree/main/docs"
+"Bug Tracker" = "https://github.com/BTEng-dev/bteng-nav2/issues"
+
+[project.optional-dependencies]
+dev = ["build", "pytest", "twine"]
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["bteng_nav2*"]
+exclude = ["test*"]
+
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
